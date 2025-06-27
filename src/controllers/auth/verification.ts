@@ -1,6 +1,5 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-
 import getEnv from '@config/env';
 
 export default async (req: express.Request, res: express.Response, next : express.NextFunction) : Promise<void> => {

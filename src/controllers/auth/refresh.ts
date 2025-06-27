@@ -1,7 +1,5 @@
 import express from 'express';
-
 import jwt from 'jsonwebtoken';
-
 import getEnv from '@config/env';
 import refDb from '@models/refreshToken';
 import { IUser } from '@models/user';

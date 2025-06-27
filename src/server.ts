@@ -1,19 +1,60 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 
 import login from '@auth/login';
 import logout from '@auth/logout';
+import register from '@auth/register';
 import refresh from '@auth/refresh';
 import verification from '@auth/verification';
 
 import db from '@config/database';
+import getEnv from '@config/env';
 
-db.Connect();
+const __dirname = path.resolve();
+class Server
+{
+    public app : express.Express;
+    public start() : void
+    {
+        const {
+            server_port,
+            server_address,
+        } = getEnv();
 
-const app : express.Express = express();
-app.use(cookieParser());
+        console.log(`Listening To port ${server_port}`);
+        this.app.listen(server_port);
 
-// routes
-app.post('/auth/login', login);
-app.post('/auth/logout', verification, logout);
-app.post('/auth/refresh', refresh);
+        this.routes();
+    }
+    public routes()
+    {
+        // auth
+        this.app.post('/auth/login', login);
+        this.app.post('/auth/register', register);
+        this.app.post('/auth/logout', verification, logout);
+        this.app.post('/auth/refresh', refresh);
+    
+        // public
+        this.app.get('/about', (req: express.Request, res: express.Response) => {
+            res.render('about');
+        });
+        this.app.get('/login', (req: express.Request, res: express.Response) => {
+            res.render('login');
+        });
+    }
+    constructor()
+    {
+        // db.Connect();
+
+        this.app = express();
+        this.app.use(cookieParser());
+        this.app.use(express.json());
+
+        this.app.set('view engine', 'ejs');
+        this.app.set('views', path.join(__dirname, 'src/controllers/public'));
+    }
+};
+
+
+export default Server;

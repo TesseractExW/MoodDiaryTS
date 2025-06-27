@@ -1,10 +1,6 @@
 import express from 'express';
-
 import jwt from 'jsonwebtoken';
-
 import userDb, { IUserDocument } from '@models/user';
-import refDb from '@models/refreshToken';
-
 import getEnv from '@config/env';
 
 export default async (req: express.Request, res: express.Response) : Promise<void> => {
@@ -49,7 +45,7 @@ export default async (req: express.Request, res: express.Response) : Promise<voi
     res.cookie('acessToken', accessToken, {
         maxAge: atoken_expire,
     });
-    res.cookie('refToken', accessToken, {
+    res.cookie('refToken', refToken, {
         maxAge: rtoken_expire,
     });
     

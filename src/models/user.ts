@@ -91,4 +91,4 @@ function Create(collectionName : string) : IUserModel
 const UserModel = Create('users');
 
 export default UserModel;
-export type { IUser, IUserDocument, IUserModel };
+export type { Mood, IUser, IUserDocument, IUserModel };

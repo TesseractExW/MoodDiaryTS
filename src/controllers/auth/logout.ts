@@ -1,7 +1,4 @@
 import express from 'express';
-
-import jwt from 'jsonwebtoken';
-
 import refDb from '@models/refreshToken';
 
 export default async (req: express.Request, res: express.Response) : Promise<void> => {
