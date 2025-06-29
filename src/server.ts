@@ -34,7 +34,7 @@ class Server {
 
         // public
         this.app.get('/', (req: express.Request, res: express.Response) => {
-            res.render('welcome');
+            res.render('home');
         });
         this.app.get('/about', (req: express.Request, res: express.Response) => {
             res.render('about');
@@ -45,8 +45,8 @@ class Server {
         this.app.get('/logout', (req: express.Request, res: express.Response) => {
             res.render('logout');
         });
-        this.app.get('/welcome', (req: express.Request, res: express.Response) => {
-            res.render('welcome');
+        this.app.get('/home', (req: express.Request, res: express.Response) => {
+            res.render('home');
         });
         this.app.get('/register', (req: express.Request, res: express.Response) => {
             res.render('register');

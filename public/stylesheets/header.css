@@ -13,53 +13,57 @@ body {
 .sidebar {
     height: 100%;
     background-color: #3b7d4f;
-    /* forest green */
     color: white;
     display: flex;
+    align-items: center;
     flex-direction: column;
-    padding: 1.5rem 1.5rem 2em 1.2em;
+    padding: 0.75rem 0.5rem 0.5rem 0.5rem;
     box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
     position: fixed;
+    gap: 0.5rem;
     left: 0;
     top: 0;
 }
 
-.sidebar h1 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 2.5rem;
-    color: #ffffff;
+.sidebar .profile {
+    padding: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
-.sidebar h1 a {
-    text-decoration: none;
-    color: #ffffff;
+.sidebar .profile img {
+    background-color: white;
+    border-radius: 50%;
 }
 
 .sidebar .items {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.7rem;
 }
 
 .sidebar .items a {
-    padding: 0.3rem;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding: 0.5rem;
     text-decoration: none;
     color: #ffffff;
     font-size: 1rem;
     font-weight: normal;
-    border-radius: 0.5rem;
-    transition: color 0.2s ease, background-color 0.2s ease, text-shadow 0.2s ease;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.sidebar .items a img {
+    padding: 0.25rem;
+    filter: invert(0.93);
+    transition: all 0.3s ease;
 }
 
 .sidebar .items a:hover {
-    color: black;
-    background-color: #d6f5dd;
-    text-shadow:0px 15px 5px rgba(0,0,0,0.1),
-                10px 20px 5px rgba(0,0,0,0.05),
-                -10px 20px 5px rgba(0,0,0,0.05);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar .items a:hover img {
+    filter: invert(1);
 }
 
 .main {
