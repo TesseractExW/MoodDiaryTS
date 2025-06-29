@@ -14,12 +14,8 @@ export default async (req: express.Request, res: express.Response) : Promise<voi
         }
     }
 
-    res.clearCookie('acessToken',{
-        httpOnly: true,
-    });
-    res.clearCookie('refToken',{
-        httpOnly: true,
-    });
+    res.clearCookie('accessToken');
+    res.clearCookie('refToken');
 
     res.status(200).json({
         message: "Logout successfully."

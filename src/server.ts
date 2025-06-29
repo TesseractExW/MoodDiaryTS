@@ -9,47 +9,59 @@ import refresh from '@auth/refresh';
 import verification from '@auth/verification';
 
 import db from '@config/database';
-import getEnv from '@config/env';
+import env from '@config/env';
 
 const __dirname = path.resolve();
-class Server
-{
-    public app : express.Express;
-    public start() : void
-    {
+class Server {
+    public app: express.Express;
+    public start(): void {
         const {
             server_port,
             server_address,
-        } = getEnv();
+        } = env.get();
 
         console.log(`Listening To port ${server_port}`);
         this.app.listen(server_port);
 
         this.routes();
     }
-    public routes()
-    {
+    public routes() {
         // auth
         this.app.post('/auth/login', login);
         this.app.post('/auth/register', register);
         this.app.post('/auth/logout', verification, logout);
         this.app.post('/auth/refresh', refresh);
-    
+
         // public
+        this.app.get('/', (req: express.Request, res: express.Response) => {
+            res.render('welcome');
+        });
         this.app.get('/about', (req: express.Request, res: express.Response) => {
             res.render('about');
         });
         this.app.get('/login', (req: express.Request, res: express.Response) => {
             res.render('login');
         });
+        this.app.get('/logout', (req: express.Request, res: express.Response) => {
+            res.render('logout');
+        });
+        this.app.get('/welcome', (req: express.Request, res: express.Response) => {
+            res.render('welcome');
+        });
+        this.app.get('/register', (req: express.Request, res: express.Response) => {
+            res.render('register');
+        });
     }
-    constructor()
-    {
-        // db.Connect();
+    constructor() {
+        env.config();
+        db.Connect();
 
         this.app = express();
         this.app.use(cookieParser());
         this.app.use(express.json());
+
+        const dir = path.join(__dirname, 'public');
+        this.app.use('/public', express.static(dir));
 
         this.app.set('view engine', 'ejs');
         this.app.set('views', path.join(__dirname, 'src/controllers/public'));

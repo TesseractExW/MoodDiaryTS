@@ -1,9 +1,7 @@
 import Mongoose from "mongoose";
 
-class Database
-{
-    public static async Connect() : Promise<void>
-    {
+class Database {
+    public static async Connect(): Promise<void> {
         const {
             DATABASE_CONNECTION_STRING,
             DATABASE_NAME,
@@ -14,8 +12,7 @@ class Database
         await Mongoose.connect(uri);
         console.log("Connected to database successfully");
     }
-    public static async Disconnect() : Promise<void>
-    {
+    public static async Disconnect(): Promise<void> {
         await Mongoose.disconnect();
     }
 }
