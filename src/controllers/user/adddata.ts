@@ -11,7 +11,30 @@ export default async (
 ): Promise<void> => {
 	const username = req.data!.username;
 	const user = await userModel.database.findByUsername(username);
-	const {
+	const { happiness, sadness, fear, disgust, anger, surprise, description } =
+		req.body;
+
+	if (!user) {
+		res.status(400).json({
+			message: "User not found.",
+		});
+		return;
+	} else if (
+		!happiness ||
+		!sadness ||
+		!fear ||
+		!disgust ||
+		!anger ||
+		!surprise ||
+		!description
+	) {
+		res.status(400).json({
+			message: "Please input all the informations.",
+		});
+		return;
+	}
+
+	user.moods.push({
 		happiness,
 		sadness,
 		fear,
@@ -19,27 +42,10 @@ export default async (
 		anger,
 		surprise,
 		description,
-	} = req.body;
-
-    if (!user) {
-		res.status(400).json({
-			message: "User not found.",
-		});
-		return;
-	}
-
-    user.moods.push({
-        happiness,
-		sadness,
-		fear,
-		disgust,
-		anger,
-		surprise,
-		description,
 		date: new Date(),
-    });
+	});
 
-    await user.save();
+	await user.save();
 
 	res.status(200).json({
 		message: "Add new mood successfully.",
