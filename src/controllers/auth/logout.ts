@@ -1,23 +1,24 @@
-import express from 'express';
-import refDb from '@models/refreshToken';
+import express from "express";
+import * as refModel from "@models/refreshToken";
 
-export default async (req: express.Request, res: express.Response) : Promise<void> => {
+export default async (
+	req: express.Request,
+	res: express.Response
+): Promise<void> => {
+	const { refToken } = req.cookies;
 
-    const { refToken } = req.cookies;
-    
-    if (refToken)
-    {
-        try {
-            await refDb.deleteOne({ token : refToken });
-        } catch (err) {
-            console.log('Failed to delete refresh token :', err);
-        }
-    }
+	if (refToken) {
+		try {
+			await refModel.database.deleteOne({ token: refToken });
+		} catch (err) {
+			console.log("Failed to delete refresh token :", err);
+		}
+	}
 
-    res.clearCookie('accessToken');
-    res.clearCookie('refToken');
+	res.clearCookie("accessToken");
+	res.clearCookie("refToken");
 
-    res.status(200).json({
-        message: "Logout successfully."
-    });
-}
+	res.status(200).json({
+		message: "Logout successfully.",
+	});
+};

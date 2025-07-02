@@ -1,0 +1,125 @@
+<html>
+
+<head>
+	<title>MoodDiary - dashboard</title>
+</head>
+<%- include('header'); -%>
+
+	<body>
+		<div class="main">
+			<h1>Dash board of <%= username %>
+			</h1>
+			<label for="happiness">Happiness: 0–5</label><br />
+			<input type="range" id="happiness" name="happiness" min="0" max="5" /><br /><br />
+
+			<label for="sadness">Sadness: 0–5</label><br />
+			<input type="range" id="sadness" name="sadness" min="0" max="5" /><br /><br />
+
+			<label for="fear">Fear: 0–5</label><br />
+			<input type="range" id="fear" name="fear" min="0" max="5" /><br /><br />
+
+			<label for="disgust">Disgust: 0–5</label><br />
+			<input type="range" id="disgust" name="disgust" min="0" max="5" /><br /><br />
+
+			<label for="anger">Anger: 0–5</label><br />
+			<input type="range" id="anger" name="anger" min="0" max="5" /><br /><br />
+
+			<label for="surprise">Surprise: 0–5</label><br />
+			<input type="range" id="surprise" name="surprise" min="0" max="5" /><br /><br />
+
+			<label for="description">Describe your feelings:</label><br />
+			<textarea id="description" name="description" rows="4" cols="50"></textarea><br /><br />
+
+			<button onclick="submit()">Submit</button>
+
+			<canvas id="moodChart" width="600" height="300"></canvas>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		function submit() {
+			const data = {
+				happiness: parseInt(document.getElementById("happiness").value),
+				sadness: parseInt(document.getElementById("sadness").value),
+				fear: parseInt(document.getElementById("fear").value),
+				disgust: parseInt(document.getElementById("disgust").value),
+				anger: parseInt(document.getElementById("anger").value),
+				surprise: parseInt(document.getElementById("surprise").value),
+				description: document
+					.getElementById("description")
+					.value.trim(),
+			};
+			fetch("/user/adddata", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					credentials: "same-origin",
+				},
+				body: JSON.stringify(data),
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					console.log(data);
+					alert(data.message);
+				});
+		}
+	</script>
+	<script>
+		const moods = <%- JSON.stringify(moods) %>;
+		const labels = moods.map(m => new Date(m.date).toLocaleDateString());
+
+		// Extract datasets for each emotion
+		const emotions = ['happiness', 'sadness', 'fear', 'disgust', 'anger', 'surprise'];
+		const colors = ['#4caf50', '#2196f3', '#9c27b0', '#ff9800', '#f44336', '#00bcd4'];
+
+		const datasets = emotions.map((emotion, i) => ({
+			label: emotion.charAt(0).toUpperCase() + emotion.slice(1),
+			data: moods.map(m => m[emotion]),
+			borderColor: colors[i],
+			backgroundColor: colors[i] + '66', // translucent fill
+			fill: false,
+			tension: 0.4,  // smooth curves, 0 = straight lines
+			cubicInterpolationMode: 'monotone',
+		}));
+
+		const ctx = document.getElementById('moodChart').getContext('2d');
+		const chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: labels,
+				datasets: datasets,
+			},
+			options: {
+				scales: {
+					x: {
+						type: 'category',
+						title: {
+							display: true,
+							text: 'Date'
+						},
+						ticks: {
+							maxRotation: 45,
+							minRotation: 30
+						}
+					},
+					y: {
+						min: 0,
+						max: 5,
+						title: {
+							display: true,
+							text: 'Emotion Level (0-5)'
+						}
+					}
+				},
+				plugins: {
+					legend: {
+						position: 'bottom'
+					}
+				},
+				responsive: true,
+				maintainAspectRatio: true,
+			}
+		});
+	</script>
+
+</html>

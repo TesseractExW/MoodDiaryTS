@@ -1,32 +1,28 @@
 <html>
-    <head>
-        <title>MoodDiary - logout</title>
-    </head>
-    <%- include('header'); -%>
-    <body>
-        <div class="main">
-            <h1>
-                Logout page
-            </h1>
-            <button onclick="submit()">submit</button>
-        </div>
-        
-    </body>
-    <script>
-        function submit()
-        {
-            fetch('/auth/logout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'credentials': 'same-origin',
-                },
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                alert(data.message);
-            })
-        }
-    </script>
+	<head>
+		<title>MoodDiary - logout</title>
+	</head>
+	<%- include('header'); -%>
+	<body>
+		<div class="main">
+			<h1>Logout page</h1>
+			<button onclick="submit()">submit</button>
+		</div>
+	</body>
+	<script>
+		function submit() {
+			fetch("/auth/logout", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					credentials: "same-origin",
+				},
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					console.log(data);
+					alert(data.message);
+				});
+		}
+	</script>
 </html>
