@@ -49,6 +49,11 @@
 					.getElementById("description")
 					.value.trim(),
 			};
+			if (!data.description)
+			{
+				alert("Please input description info.");
+				return;
+			}
 			fetch("/user/adddata", {
 				method: "POST",
 				headers: {
